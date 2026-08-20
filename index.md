@@ -22,7 +22,7 @@ This tutorial is mostly comprised of basic python and bash, but doesn't require 
 
 ### 1. Introduction
 
-**→ [Start the tutorial](01-inton.md)**
+**→ [Start the tutorial](01-ntro.md) **
 
 ---
 
