@@ -1,0 +1,44 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+/* Make the overall page wider */
+.wrapper {
+  width: 95%;
+  max-width: 1400px;
+}
+
+/* Make the Minimal sidebar narrower */
+header {
+  width: 180px;
+}
+
+/* Give the content the remaining space */
+section {
+  width: auto;
+  max-width: none;
+  flex: 1;
+}
+
+/* Keep the layout horizontal */
+.wrapper {
+  display: flex;
+  gap: 40px;
+}
+
+/* Responsive layout */
+@media screen and (max-width: 720px) {
+  .wrapper {
+    display: block;
+    width: 95%;
+  }
+
+  header {
+    width: 100%;
+  }
+
+  section {
+    width: 100%;
+  }
+}
