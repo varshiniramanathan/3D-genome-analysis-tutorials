@@ -9,4 +9,5 @@ defaults:
       path: ""
       type: "pages"
     values:
-      layout: tutorial
+      layout: base_layout
+    
