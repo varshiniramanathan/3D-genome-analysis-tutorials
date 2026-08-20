@@ -4,3 +4,9 @@ description: "how to"
 
 theme: jekyll-theme-minimal
 
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: tutorial

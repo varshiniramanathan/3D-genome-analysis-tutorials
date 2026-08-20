@@ -1,0 +1,69 @@
+<style>
+/* Use the available browser width */
+.wrapper {
+  width: 95%;
+  max-width: none;
+}
+
+/* Make the Minimal sidebar narrower */
+header {
+  width: 150px;
+}
+
+/* Let the main content use the remaining width */
+section {
+  width: auto;
+  max-width: none;
+  flex: 1;
+}
+
+/* Tutorial-specific layout */
+.tutorial-container {
+  display: flex;
+  gap: 30px;
+}
+
+.tutorial-sidebar {
+  width: 150px;
+  min-width: 150px;
+}
+
+.tutorial-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Don't let images/code/etc. overflow */
+.tutorial-content img {
+  max-width: 100%;
+}
+
+.tutorial-content pre {
+  overflow-x: auto;
+}
+
+/* Mobile */
+@media screen and (max-width: 720px) {
+  .wrapper {
+    width: 95%;
+  }
+
+  header {
+    width: 100%;
+  }
+
+  section {
+    width: 100%;
+  }
+
+  .tutorial-container {
+    display: block;
+  }
+
+  .tutorial-sidebar {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 25px;
+  }
+}
+</style>
