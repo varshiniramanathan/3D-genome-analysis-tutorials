@@ -5,19 +5,14 @@ title: "Introduction"
 
 # 1. Introduction
 
-Briefly introduce the topic and explain what the tutorial will accomplish.
+## Prerequisites
 
-## Overview
+Before starting, if you are a Hansen Lab member:
 
-This section provides background on the problem.
+1. Make sure you are a user on a lab computer.
+2. Familiarize yourself with ssh and remote access.
 
-## Learning objectives
-
-By the end of this section, you should understand:
-
-- [Concept 1]
-- [Concept 2]
-- [Concept 3]
+This tutorial is mostly comprised of basic python and bash, but doesn't require proficiency in either. 
 
 ---
 
