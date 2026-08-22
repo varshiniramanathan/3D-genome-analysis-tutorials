@@ -21,7 +21,8 @@ This tutorial is mostly comprised of basic python and bash, but doesn't require 
 ## Tutorial
 
 [Introduction](intro.md)
-[Quickstart: Understanding your dataset, stats reporting, and Hi-Glass visualization](quickstart.md)
+[Understanding your dataset, stats reporting, and Hi-Glass visualization](quickstart.md)
+[Overview of common genomics utilities](packages.md)
 [P(s) curves, observed-over-expected](expected.md)
 [Contact maps as matrices](matrix.md)
 [Calling, quantifying, and classifying loops](loops.md)
