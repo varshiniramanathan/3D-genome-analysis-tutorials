@@ -20,14 +20,15 @@ This tutorial is mostly comprised of basic python and bash, but doesn't require 
 
 ## Tutorial
 
-[Introduction](intro.md)
-[Understanding your dataset, stats reporting, and Hi-Glass visualization](quickstart.md)
-[Overview of common genomics utilities](packages.md)
-[P(s) curves, observed-over-expected](expected.md)
-[Contact maps as matrices](matrix.md)
-[Calling, quantifying, and classifying loops](loops.md)
-[More advanced operations with loops](loops.md)
-[Making presentation and publication plots](formal-vis.md)
+[Introduction](intro.md) \
+[Understanding your dataset, stats reporting, and Hi-Glass visualization](quickstart.md) \
+[Overview of common genomics utilities](packages.md) \
+[P(s) curves, observed-over-expected](expected.md) \
+[Contact maps as matrices](matrix.md) \
+[Calling, quantifying, and classifying loops](loops.md) \
+[More advanced operations with loops](more_loops.md) \
+[Pileups and associated analyses](pileups.md) \
+[Making presentation and publication plots](formal-vis.md) \
 
 ---
 
