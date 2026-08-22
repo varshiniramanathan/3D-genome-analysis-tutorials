@@ -21,19 +21,4 @@ Welcome to varsh's 3D genome analysis page! This tutorial should serve as a land
 
 ---
 
-## Resources
-
-- [Documentation](#)
-- [Example data](#)
-- [Source code](#)
-- [Additional resources](#)
-
-## Citation
-
-If you use this tutorial in your work, please cite:
-
-> Author et al. *Tutorial Title*. Year.
-
----
-
 **Questions or issues?** [Open an issue on GitHub](#).
