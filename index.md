@@ -9,17 +9,6 @@ Welcome to varsh's 3D genome analysis page! This tutorial should serve as a land
 
 ---
 
-## Prerequisites
-
-Before starting, if you are a Hansen Lab member:
-
-1. Make sure you are a user on a lab computer.
-2. Familiarize yourself with ssh and remote access.
-
-This tutorial is mostly comprised of basic python and bash, but doesn't require proficiency in either. 
-
-## Tutorial
-
 [Introduction](intro.md) \
 [Understanding your dataset, stats reporting, and Hi-Glass visualization](quickstart.md) \
 [Overview of common genomics utilities](packages.md) \
@@ -28,7 +17,7 @@ This tutorial is mostly comprised of basic python and bash, but doesn't require 
 [Calling, quantifying, and classifying loops](loops.md) \
 [More advanced operations with loops](more_loops.md) \
 [Pileups and associated analyses](pileups.md) \
-[Making presentation and publication plots](formal-vis.md) \
+[Making presentation and publication plots](formal-vis.md) 
 
 ---
 
