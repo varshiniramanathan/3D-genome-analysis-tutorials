@@ -16,4 +16,4 @@ This tutorial is mostly comprised of basic python and bash, but doesn't require 
 
 ---
 
-**Next:** [Getting Started](02-getting-started.html)
+**Next:** [Understanding your dataset, stats reporting, and Hi-Glass visualization](quickstart.md)
