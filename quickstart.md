@@ -48,15 +48,38 @@ Why do we care about these quantities?
 
 Lastly, I'll touch on the concept of "resolution."
 
-The cooler package is extremely well-documented (see Resources:cooler documentation page).
----
+## Visualization with Hi-Glass:
+
+Hi-Glass is a web viewer that supports 3D genomics datasets in addition to 1D tracks. Please follow the "visualization" section of the [Micro-C/RCMC paper](https://www.nature.com/articles/s41596-026-01393-3) to set up a docker instance. (@Hansen Lab, we have a shared instance running. Please see the private docs for instructions.)
+
+We often want to use 1D tracks like .bigwig and .bed files to view alongside our 3D genomics. To add 1D tracks, we use a package called [`clodius`](https://pypi.org/project/clodius/) to aggregate datasets in a zoom-able way, since they are not inherently multi-binsize like .mcools. There is detailed information on the [Hi-Glass page](https://pkerpedjiev.github.io/higlass-docs-beta/data_preparation.html) but here are some snippets:
+
+```
+## bedpe file, ex. loops:
+clodius aggregate bedpe --chromsizes-filename /path/to/chromsizes loopfile.bedpe --output-file loopfile.multires
+higlass-manage ingest loopfile.multires \
+	--filetype bed2ddb \
+	--datatype 2d-rectangle-domains \
+  --project-name your_project_name
+
+#bw
+higlass-manage ingest your_bigwig --assembly your_assembly --project-name your_project_name
+
+## bed:
+clodius aggregate bedfile --chromsizes-filename path/to/chromsizes bedfile.bed
+higlass-manage ingest --project-name project_name bedfile.bed.beddb
+
+```
+
+If you have Hi-Glass running on a server (@Hansen Lab, this applies to our shared instance; see private docs) then be sure to move the aggregated files to the media directory before you run `ingest`, and add the flag `--no-upload` to your `ingest` command. 
 
 ## Resources:
+
+The cooler package is extremely well-documented (see Resources:cooler documentation page).
 
 - [Mapping pipeline for Micro-C and RCMC](https://github.com/ahansenlab/MicroC_RCMC_analysis/) \
 - [cooler documentation page](https://cooler.readthedocs.io) \
 - [pairtools explanation of pair types](https://pairtools.readthedocs.io/en/latest/formats.html) \
-- [Example data](#)
 
 
 ## Citation
