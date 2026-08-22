@@ -25,13 +25,18 @@ First, let's grab the quantities of interest from the stats file into a python d
 def grab_metrics(statfile, *args):
     with open(statfile, 'r') as f:
         stats = [line.rsplit('\t', 1) for line in f]
-        stats_dict = {key: int(value)/1_000_000_000 for key, value in stats if key in args}
+        stats_dict = {
+            key: int(value) / 1_000_000_000
+            for key, value in stats
+            if key in args
+        }
 
-    return stats_dict
+    return os.path.basename(statfile).split('.')[0], stats_dict
 
-metrics = ['total', 'total_mapped',total_unmapped','total_nodups', 'total_dups', 'cis','trans', 'cis_1kb+', 'cis_20kb+'
-metric_dict = dict(zip(stat_names, [grab_metrics(os.path.join(stat_dir, file), *metrics) for file in stat_names]))
-metric_df = pd.DataFrame.from_dict(metric_dict)
+metric_args = ['total', 'total_mapped','total_unmapped','total_nodups', 'total_dups', 'cis','trans', 'cis_1kb+', 'cis_20kb+']
+metrics = [grab_metrics(statfile, *metric_args) for statfile in stat_files]
+
+metric_df = pd.DataFrame.from_dict(dict(metrics), orient='index')
 
 ```
 
