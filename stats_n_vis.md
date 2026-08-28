@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Quickstart"
+title: "Understanding your dataset + visualization"
 ---
 
-# 1. Quickstart
+# 1. Understanding your dataset + Hi-Glass visualization
 
 ## Understanding your dataset: read depth, informative reads, and resolution
 
