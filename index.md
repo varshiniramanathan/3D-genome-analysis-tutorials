@@ -10,7 +10,7 @@ Welcome to varsh's 3D genome analysis page! This tutorial should serve as a land
 ---
 
 [Introduction](intro.md) \
-[Understanding your dataset, stats reporting, and Hi-Glass visualization](quickstart.md) \
+[Understanding your dataset, stats reporting, and Hi-Glass visualization](stats_n_vis.md) \
 [Overview of common genomics utilities](packages.md) \
 [P(s) curves, observed-over-expected](expected.md) \
 [Contact maps as matrices](matrix.md) \
