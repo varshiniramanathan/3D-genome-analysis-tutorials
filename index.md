@@ -1,8 +1,6 @@
 ---
-title: Tutorial
+title: Overview
 ---
-
-# Overview
 
 Welcome to varsh's 3D genome analysis page! This tutorial should serve as a landing pad to start exploring how to analyze your contact maps. This is partially a collection of documentation and tutorials, but also contains code snippets, exercises, and other such tips and tricks.
 
