@@ -129,4 +129,4 @@ Hi-Glass has many useful features and modes that are nicely enumerated in [these
 
 ---
 
-**Next:** [Overview of common genomics utilities](packages.md)
+**Next:** [Overview of common genomics utilities](packages.html)
