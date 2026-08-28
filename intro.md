@@ -12,4 +12,4 @@ While RCMC can usually be handled on a personal computer, whole-genome high-res 
 
 ---
 
-**Next:** [Understanding your dataset, stats reporting, and Hi-Glass visualization](quickstart.md)
+**Next:** [Understanding your dataset, stats reporting, and Hi-Glass visualization](stats_n_vis.md)
