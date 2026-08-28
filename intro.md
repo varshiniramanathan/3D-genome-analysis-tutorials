@@ -2,8 +2,6 @@
 title: "Introduction"
 ---
 
-# 1. Introduction
-
 ## Prerequisites
 
 This tutorial is mostly comprised of basic python and bash, but doesn't require proficiency in either. It starts from the post-mapping stage and assumes that you used a pipeline similar to the [Hansen Lab's pipeline](https://github.com/ahansenlab/MicroC_RCMC_analysis/) to produce [cooler](https://cooler.readthedocs.io/en/latest/datamodel.html)-format datasets. I'll generally refer to 3D genomics datasets as Micro-C, although for the most part these analyses will also apply to Hi-C and RCMC (except, of course, whole-chromosome and whole-genome analyses do not apply to RCMC). 
