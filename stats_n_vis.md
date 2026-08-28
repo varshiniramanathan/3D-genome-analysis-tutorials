@@ -131,4 +131,4 @@ Hi-Glass has many useful features and modes that are nicely enumerated in [these
 
 ---
 
-**Next:** [P(s) curves and observed-over-expected](expected.md)
+**Next:** [Overview of common genomics utilities](packages.md)
