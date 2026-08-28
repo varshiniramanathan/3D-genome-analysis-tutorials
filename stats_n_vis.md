@@ -1,5 +1,4 @@
 ---
-layout: default
 title: "Understanding your dataset + visualization"
 ---
 
