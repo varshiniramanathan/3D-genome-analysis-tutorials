@@ -2,11 +2,9 @@
 title: "Understanding your dataset + visualization"
 ---
 
-# 1. Understanding your dataset + Hi-Glass visualization
-
 ## Understanding your dataset: read depth, informative reads, and resolution
 
-# A brief summary of Micro-C processing and outputs
+### A brief summary of Micro-C processing and outputs
 
 First, I will give a broad overview of how the data was processed, since it's easy to run a pipeline without understanding what went into it. In our pipeline (Resources:pipeline for Micro-C and RCMC), we use a standard sequencing aligner (bwa-mem2) with some extra flags to account for differences between typical paired-end libraries and Micro-C libraries. Then, we use pairtools to find read pairs where both ends aligned properly and where the read is unique. Finally, we store these uniquely mapped pairs in a .cool file, which allows us to store and access data efficiently. 
 
@@ -14,7 +12,7 @@ Since 3D genomics has low coverage compared to typical methods, we usually need 
 
 The main file format that we will be working with is called an .mcool file, which stores coolers binned at multiple binsizes together simultaneously. At each binsize, the cooler is "balanced" to account for systematic differences that could affect read counts, such as accessibility biases. Typically, our .mcools contain binsizes from 250bp to 10Mb. The cooler package is extremely well-documented (see Resources:cooler documentation page). If you are not familiar with how to load a cooler (`cooler.Cooler()`) or fetch a matrix (`matrix.fetch())`) it may be worth taking some time to read about how to do that, although I will talk about matrices more later.
 
-# Reporting the quality of your data
+### Reporting the quality of your data
 
 Often, the first thing you want to do after processing your data is see how good it is. The quickest and most informative way is to look at the `stats` output of `pairtools dedup`, which is the command that finds and removes duplicate pairs that were marked by `pairtools parse2` (see [pairtools docs](https://pairtools.readthedocs.io/en/latest/index.html) for more information. 
 
