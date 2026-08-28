@@ -1,6 +1,8 @@
 title: "3D genome analysis tutorials"
-logo: 
-description: "how to"
+logo: "assets/images/lab_logo.png"
+description: "how to analyze your contact maps"
 
-theme: jekyll-theme-minimal
+plugins:
+  - jekyll-remote-theme
 
+remote_theme: "jekyll/minima@1e8a445"
