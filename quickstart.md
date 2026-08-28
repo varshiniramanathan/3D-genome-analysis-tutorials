@@ -9,7 +9,7 @@ title: "Quickstart"
 
 # A brief summary of Micro-C processing and outputs
 
-First, I will give a broad overview of how the data was processed, since it's easy to run a pipeline without understanding what went into it. In our pipeline (Resources:pipeline for Micro-C and RCMC), we use a standard sequencing aligner (bwa-mem2) with some extra flags to account for differences between typical paired-end libraries and Micro-C libraries. Then, we use pairtools to find read pairs where both ends aligned properly and where the read is unique. Finally, we store these uniquely mapped pairs in a .cool file, which allows us to store and access pairs efficiently. 
+First, I will give a broad overview of how the data was processed, since it's easy to run a pipeline without understanding what went into it. In our pipeline (Resources:pipeline for Micro-C and RCMC), we use a standard sequencing aligner (bwa-mem2) with some extra flags to account for differences between typical paired-end libraries and Micro-C libraries. Then, we use pairtools to find read pairs where both ends aligned properly and where the read is unique. Finally, we store these uniquely mapped pairs in a .cool file, which allows us to store and access data efficiently. 
 
 Since 3D genomics has low coverage compared to typical methods, we usually need to bin pairs from nearby genomic positions together to visualize and analyze data. People often refer to the size of the bin (how many genomic positions are pooled together into one bin) as "resolution," but it's hard to define resolution in the 3D genomics context. So, I will refer to this term as "binsize," and reserve "resolution" for metrics that actually measure the richness or quality of the dataset (more detail below). 
 
@@ -66,7 +66,7 @@ for res in resolutions:
     clr = cooler.Cooler(f'{clr_name}::resolutions/{res}')
 
 	# get cooler matrix at the current binsize
-	mat = clr.matrix(balance=False).fetch()
+	mat = clr.matrix(balance=False).fetch(test_region)
 
 	all_bins = []
 	for row in mat:
@@ -89,7 +89,7 @@ Unfortunately, there is no golden rule for how many reads you need to achieve a 
 
 ## Visualization with Hi-Glass:
 
-Hi-Glass is a web viewer that supports 3D genomics datasets in addition to 1D tracks. Please follow the "visualization" section of the [Micro-C/RCMC paper](https://www.nature.com/articles/s41596-026-01393-3) to set up a docker instance. (@Hansen Lab, we have a shared instance running. Please see the private docs for instructions.)
+Hi-Glass is a web viewer that supports 3D genomics datasets in addition to 1D tracks. Please follow the "visualization" section of the [Micro-C/RCMC paper](https://www.nature.com/articles/s41596-026-01393-3) to set up an instance via docker. (@Hansen Lab, we have a shared instance running. Please see the private docs for instructions.)
 
 We often want to use 1D tracks like .bigwig and .bed files to view alongside our 3D genomics. To add 1D tracks, we use a package called [`clodius`](https://pypi.org/project/clodius/) to aggregate datasets in a zoom-able way, since they are not inherently multi-binsize like .mcools. There is detailed information of how to load various datasets on the [Hi-Glass page](https://pkerpedjiev.github.io/higlass-docs-beta/data_preparation.html) but here are some snippets:
 
@@ -118,6 +118,10 @@ higlass-manage ingest --project-name "${proj_name}" BEDFILE_BASENAME.bed.beddb
 ```
 
 If you have Hi-Glass running on a server (@Hansen Lab, this applies to our shared instance; see private docs) then be sure to move the aggregated files to the media directory (where all the files are stored) before you run `ingest`, and add the flag `--no-upload` to your `ingest` command. 
+
+Hi-Glass has many useful features and modes that are nicely enumerated in [these tutorial slides](https://hms-dbmi.github.io/hic-data-analysis-bootcamp/#1) (starting on slide 27). Some small tips in addition:
+- Add gene annotations first. Then, set the assembly. Then, everything else. This will allow you to zoom to specific loci by searching a gene name.
+- Locking zoom and location (slide 51 in above link) is very useful for handling multiple datasets at once. 
 
 ## Resources:
 
