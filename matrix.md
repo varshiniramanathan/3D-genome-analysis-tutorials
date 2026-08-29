@@ -10,10 +10,6 @@ In the introduction section, we discussed how Micro-C paired-end reads correspon
 
 Here is a neat animation by James Jusuf that shows how read pairs are binned and how these bins are represented as a matrix. Notice how the color fills in first close to the diagonal. That's because probabilistically, more reads come from ligations of nearby genomic positions, so as you add more reads you get more distal interactions. 
 
-![A video of Micro-C reads distributing in a contact map matrix](https://github.com/user-attachments/assets/50051161-c8be-4d60-b425-31fb5d31b078)
-
-<video src='ttps://github.com/user-attachments/assets/50051161-c8be-4d60-b425-31fb5d31b078' width=180/></video>
-
 You may already be familiar with the orientation and interpretation of these maps. A genomic interaction (A, A) lies on the diagonal (ex. chr1:1_000_000-1_001_000, chr1:1_000_000-1_001_000). Any other genomic interaction lies at the position (row A, column B). 
 
 ![Reading Micro-C](assets/images/reading-microc.png)
