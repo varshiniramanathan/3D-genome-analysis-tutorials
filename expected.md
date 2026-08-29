@@ -116,65 +116,85 @@ Many quantitative analyses we want to do on Micro-C maps will require P(s) norma
 
 Cooltools can divide a contact map matrix by its expected:
 
-However, this requires storing the whole matrix in memory, which can quickly get memory-infeasible for whole chromosomes. If you want to quickly isolate and normalize regions of interest, use   `cooltools ObsExpSnipper` (here is a quick example that computes the O/E intensity around a list of loops):
+However, this requires storing the whole matrix in memory, which can quickly get memory-infeasible for whole chromosomes. If you want to quickly isolate and normalize regions of interest, use   `cooltools ObsExpSnipper()`. Here is a quick example that computes the O/E intensity of a list of loops. This is not the most computationally efficient way to run this code but it's easy-ish to read.
 
 ```
+# compute_oe.py
 
-def oe(PS, clr):
+import numpy as np
+import os
+import pandas as pd
+import cooltools
+from cooltools.api import snipping
+
+def oe(PS, clr, loops, quantsize):
     loops_curr = []
-
     PS_df = pd.read_csv(PS, sep='\t')
 
-    snipper = snipping.ObsExpSnipper(clr, PS_df)
+    # by default, expected-normalization is done with the balanced.avg column (not smoothed or aggregated)
+    # if you wish to change this, pass a different expected_value_col as I have done here 
+    snipper = snipping.ObsExpSnipper(clr, PS_df, exected_value_col=balanced.avg.smoothed)
 
     # fetch matrices by chromosome
     for chrom in loops.iloc[:,0].unique():
+
+        # select stores a sparse (memory-light) representation of a big region
+        # by default, it's a chromosome in the cooler
+        # if you wanted to select another region ex. part of a chrom, you need to set those regions as a view_df and pass it to ObsExpSnipper() above
         mat_chrom = snipper.select(chrom,
                                    chrom)
-        loops_chrom = _loops[_loops.iloc[:,0]==chrom]
+        loops_chrom = loops[loops['chr1']==chrom] 
      
-        # for each loop, select(self, region1, region2) and snip(self, matrix, region1, region2, tup) of the loop +/- 10 kb
+        # for each loop, snip the loop center +/- quantsize
         for i, loop in loops_chrom.iterrows():
 
-            chr_name = loop.iloc[0]
-            left_coord = int(np.mean([loop.iloc[1], loop.iloc[2]]))
-            right_coord = int(np.mean([loop.iloc[4], loop.iloc[5]]))
+            left_coord = int(np.mean([loop['start1'], loop.iloc['end1']]))
+            right_coord = innt(np.mean([loop['start2'], loop.iloc['end2']]))
 
-            tup = (left_coord-int(_quantsize),left_coord+int(_quantsize),
-                   right_coord - int(_quantsize),right_coord + int(_quantsize))
+            # represents a square of size 2*quantsize around the loop center 
+            tup = (left_coord - int(quantsize), left_coord + int(quantsize),
+                   right_coord - int(quantsize), right_coord + int(quantsize))
 
-            snip = snipper.snip(mat_chrom, region1, region2, tup)
+            # snip gets a dense (memory-heavy) representation of a small area (tup)
+            snip = snipper.snip(mat_chrom, chrom, chrom, tup)
             score = np.average(np.average(snip))
 
             loops_curr.append(score)
 
-    # get the average of that region and append it to loops_curr
     return loops_curr
 
 
-
 if __name__=='__main__':
-    phases = ['Phase1_', 'Phase2_dedup', 'Phase3_dedup']
-    resolution = 2000
+    # parameters
+    resolution = some_integer
+    quantsize = some_integer
 
+    # lists
     microc_cooler_names = []
-    microc_coolers = [utils.get_clr(clr_name, resolution) for clr_name in microc_cooler_names]
-
     PS_names = []
-    for p, clr in zip(PS_names, microc_coolers):
-        if not os.path.exists(p):
-            print(f"making expected at {p}...")
-            PS_df = cooltools.expected_cis(clr=clr, smooth=True, aggregate_smoothed=True, nproc=8)
-            PS_df.to_csv(p, sep='\t', index=False)
 
+    # filepaths
     output_path = ''
     loopcall_path = ''
 
-    loops.sort_values(by=[loops.columns[0], loops.columns[1], loops.columns[4]], inplace=True)
+    microc_coolers = [utils.get_clr(clr_name, resolution) for clr_name in microc_cooler_names]
 
-    quantsize = 10000
-    test_range = [0, 100, 500]
+    for p, clr in zip(PS_names, microc_coolers):
+        if not os.path.exists(p):
+            print(f"making expected at {p}...")
+
+            # note that this P(s) is not subset to chromosomal arms
+            PS_df = cooltools.expected_cis(clr=clr, aggregate_smoothed=True, nproc=8)
+            PS_df.to_csv(p, sep='\t', index=False)
+
+    loops = pd.read_csv(loopcall_path, sep='\t', names=['chr1','start1','end1','chr2','start2','end2'])
+    loops.sort_values(by=['chr1,'start1','start2'] inplace=True).reset_index(drop=True)
+
     loops_out = loops.copy()
+
+    for i, cond in enumerate(microc_cooler_names):
+        oe_scores_curr = oe(PS_names[i], microc_coolers[i], loops, quantsize)
+        loops_out[f'Strength_{cond}'] = oe_scores_curr
 
 ```
 
