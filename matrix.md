@@ -18,7 +18,7 @@ Here is a neat animation by James Jusuf that shows how read pairs are binned and
 
 You may already be familiar with the orientation and interpretation of these maps. A genomic interaction (A, A) lies on the diagonal (ex. chr1:1_000_000-1_001_000, chr1:1_000_000-1_001_000). Any other genomic interaction lies at the position (row A, column B). 
 
-![Reading Micro-C](assets/images/reading_microc.png)
+![Reading Micro-C](assets/images/reading-microc.png)
 
 Next, we will learn how to programmatically interface with these matrices. 
 
