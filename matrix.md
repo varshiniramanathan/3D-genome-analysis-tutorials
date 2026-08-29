@@ -1,5 +1,3 @@
-
-
 ---
 title: "Contact maps are matrices"
 ---
