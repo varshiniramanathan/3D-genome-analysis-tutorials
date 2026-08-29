@@ -12,6 +12,8 @@ Many of you should be familiar with these. I'm at risk of reinventing the (tutor
 - [Exploring Bioinformatics File Formats](https://www.happykhan.com/posts/bioinfo-formats-file-formats)
 - [bedtools documentation](https://bedtools.readthedocs.io/en/stable/)
 
+One important note is that in general, genomic file formats (namely BED and BEDPE files) do not have headers, but it is often easier to refer to things by columns when you analyze them in python or R, but you may have to set those column names yourselves since the BED-like file will not have them. In general, the convention is to load BED files with the columns chr, start, end. For BEDPE, it's chr1, start1, end1, chr2, start2, end2. 
+
 ### Frames for your data
 
 A very common way that we represent analyzed data is to tabulate it (make a table that both you and your code can read and interpret). You can dress up your tabulated data in different ways, but the core of it that you will have columns that indicate features of the dataset, and rows that indicate samples of the dataset. For example, columns could be chromosome, start of a genomic interval, and end of genomic interval, and rows could be 1 million genomic intervals. Rows could be loops, and columns could be the coordinates and strengths of those loops. Etc. (You could technically flip rows and columns, but don't do this. Almost all genomics wants your data tabulated in this way.
@@ -20,13 +22,19 @@ A very common way that we represent analyzed data is to tabulate it (make a tabl
 
 `pandas` provides the DataFrame, which is essentially a programmable spreadsheet. You will encounter pandas constantly for filtering, joining, grouping, reshaping, and summarizing tabular genomics data. Many of the `cooltools` and `cooler` functions are representing the data as dataframes (or viewframes; see below) under the hood. So, if you have familiarity with `pandas`, you can better understand what's going on in the code that runs those tools. 
 
+```
+# example of how you read a BED file into pandas
+import pandas as pd
+df = pd.read_csv("peaks.bed", sep="\t", header=None,
+                 names=["chrom", "start", "end"])
+```
+
 `polars` is another DataFrame library that does many of the same things as `pandas`, but is designed to be faster and more memory-efficient for large datasets. The syntax is somewhat different, and I don't use it at all in this tutorial. I wouldn't recommend learning it; more so recognizing it. But it's good to know that it's basically a faster and cleaner `pandas`. 
 
 `bioframe` builds on the DataFrame concept specifically for genomic intervals. It provides functions for things you would otherwise have to implement yourself, such as finding overlaps between genomic regions. The base unit of `bioframe` is called a view/viewframe. It allows you to load specific genomics formats like .bed files, get genomic intervals, get all the chromosomal arms for your genome, etc. See below for a quick example, and see the [bioframe docs](https://bioframe.readthedocs.io/en/latest/) for more information. 
 
 ```
 import bioframe
-
 peaks = bioframe.read_table("peaks.bed", schema="bed3")
 genes = bioframe.read_table("genes.bed", schema="bed3")
 
