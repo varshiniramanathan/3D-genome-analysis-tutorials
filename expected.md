@@ -177,15 +177,15 @@ if __name__=='__main__':
     output_path = ''
     loopcall_path = ''
 
-    microc_coolers = [utils.get_clr(clr_name, resolution) for clr_name in microc_cooler_names]
+    microc_coolers = [cooler.Cooler(f"{clr_path}::/resolutions/{resolution}" for clr_name in microc_cooler_names]
 
-    for p, clr in zip(PS_names, microc_coolers):
-        if not os.path.exists(p):
-            print(f"making expected at {p}...")
+    for ps_name, clr in zip(PS_names, microc_coolers):
+        if not os.path.exists(ps_name):
+            print(f"making expected at {ps_name}...")
 
             # note that this P(s) is not subset to chromosomal arms
             PS_df = cooltools.expected_cis(clr=clr, aggregate_smoothed=True, nproc=8)
-            PS_df.to_csv(p, sep='\t', index=False)
+            PS_df.to_csv(ps_name, sep='\t', index=False)
 
     loops = pd.read_csv(loopcall_path, sep='\t', names=['chr1','start1','end1','chr2','start2','end2'])
     loops.sort_values(by=['chr1,'start1','start2'] inplace=True).reset_index(drop=True)
