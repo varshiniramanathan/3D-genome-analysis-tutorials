@@ -12,8 +12,7 @@ In the introduction section, we discussed how Micro-C paired-end reads correspon
 
 ![A video of Micro-C reads distributing in a contact map matrix](https://github.com/user-attachments/assets/50051161-c8be-4d60-b425-31fb5d31b078)
 
-<video src='ttps://github.com/user-attachments/assets/50051161-c8be-4d60-b425-31fb5d31b078' width=180/>
-
+<video src='ttps://github.com/user-attachments/assets/50051161-c8be-4d60-b425-31fb5d31b078' width=180/></video>
 
 ### Sparse and dense matrix representations
 
