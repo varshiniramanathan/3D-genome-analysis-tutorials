@@ -84,4 +84,4 @@ Again, this page is not meant to be comprehensive. If you scrolled through it, g
 
 ---
 
-**Next:** [P(s) curves and observed/expected](expected.md)
+**Next:** [Contact maps as matrices](matrix.md)
