@@ -14,7 +14,7 @@ The main file format that we will be working with is called an .mcool file, whic
 
 ### Reporting the quality of your data
 
-Often, the first thing you want to do after processing your data is see how good it is. The quickest and most informative way is to look at the `stats` output of `pairtools dedup`, which is the command that finds and removes duplicate pairs that were marked by `pairtools parse2` (see [pairtools docs](https://pairtools.readthedocs.io/en/latest/index.html) for more information. 
+Often, the first thing you want to do after processing your data is see how good it is. The quickest and most informative way is to look at the `stats` output of `pairtools dedup`, which is the command that finds and removes duplicate pairs that were marked by `pairtools parse2` (see [pairtools docs](https://pairtools.readthedocs.io/en/latest/index.html) for more information). 
 
 First, let's grab the quantities of interest from the stats file into a python dataframe:
 
@@ -97,7 +97,7 @@ We often want to use 1D tracks like .bigwig and .bed files to view alongside our
 chromsizes_path = /PATH/TO/CHROMSIZES/
 proj_name = YOUR_PROJECT_NAME # helps organize sub-folders in Hi-Glass, you would need to make the sub-folder in the folder where you keep your data using mkdir first
 assembly = YOUR_ASSEMBLY # ex. hg38
-file_basename = YOUR_FILE_NAME # the filename including the extension, in this snippet i made it the same for all the file types but this may not be the case for you
+file_basename = YOUR_FILE_NAME # the filename not including the extension, in this snippet i made it the same for all the file types but this may not be the case for you
 
 ## bedpe file, ex. loops:
 clodius aggregate bedpe --chromsizes-filename "${chromsizes_path}" "${file_basename}.bedpe" --output-file "${file_basename}.multires"
