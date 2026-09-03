@@ -95,26 +95,27 @@ We often want to use 1D tracks like .bigwig and .bed files to view alongside our
 
 # remember to define all your variables
 chromsizes_path = /PATH/TO/CHROMSIZES/
-proj_name = YOUR_PROJECT_NAME # helps organize sub-folders in Hi-Glass
+proj_name = YOUR_PROJECT_NAME # helps organize sub-folders in Hi-Glass, you would need to make the sub-folder in the folder where you keep your data using mkdir first
 assembly = YOUR_ASSEMBLY # ex. hg38
+file_basename = YOUR_FILE_NAME # the filename including the extension, in this snippet i made it the same for all the file types but this may not be the case for you
 
 ## bedpe file, ex. loops:
-clodius aggregate bedpe --chromsizes-filename "${chromsizes_path}" "$LOOPFILE_BASENAME.bedpe" --output-file "LOOPFILE_BASENAME.multires"
-higlass-manage ingest "${loop_file_basename}.multires" \
+clodius aggregate bedpe --chromsizes-filename "${chromsizes_path}" "${file_basename}.bedpe" --output-file "${file_basename}.multires"
+higlass-manage ingest "${file_basename}.multires" \
 	--filetype bed2ddb \
 	--datatype 2d-rectangle-domains \
-  --project-name "${proj_name}"
+    --project-name "${proj_name}"
 
-#bw
-higlass-manage ingest BIGWIG_FILENAME --assembly "${assembly}" --project-name "${proj_name}"
+## bw
+higlass-manage ingest "${file_basename}.bw" --assembly "${assembly}" --project-name "${proj_name}"
 
 ## bed:
-clodius aggregate bedfile --chromsizes-filename "${chromsizes_path}" BEDFILE_BASENAME.bed
-higlass-manage ingest --project-name "${proj_name}" BEDFILE_BASENAME.bed.beddb
+clodius aggregate bedfile --chromsizes-filename "${chromsizes_path}" "${file_basename}.bed"
+higlass-manage ingest --project-name "${proj_name}" "${file_basename}.bed.beddb"
 
 ```
 
-If you have Hi-Glass running on a server (@Hansen Lab, this applies to our shared instance; see private docs) then be sure to move the aggregated files to the media directory (where all the files are stored) before you run `ingest`, and add the flag `--no-upload` to your `ingest` command. 
+If you have Hi-Glass running on a server (@Hansen Lab, this applies to our shared instance; see private docs) then be sure to move the aggregated files to the media directory (where all the files are stored) and move to that directory using `cd` before you run `ingest`, and add the flag `--no-upload` to your `ingest` command. 
 
 Hi-Glass has many useful features and modes that are nicely enumerated in [these tutorial slides](https://hms-dbmi.github.io/hic-data-analysis-bootcamp/#1) (starting on slide 27). Some small tips in addition:
 - Add gene annotations first. Then, set the assembly. Then, everything else. This will allow you to zoom to specific loci by searching a gene name.
