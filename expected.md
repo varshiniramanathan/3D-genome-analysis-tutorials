@@ -34,7 +34,7 @@ resolution = 2000 # as an example
 uc_coolers = [cooler.Cooler(f"{clr_path}::/resolutions/{resolution}" for clr_name in uc_filenames]
 
 # just a sample way of saving files in an easily retrievable manner (matched properly to the cooler names)
-uc_exp_fnames = [P_s_{Path(f).stem}_{resolution}bp.tsv" for f in uc_filenames]
+uc_exp_fnames = [f"P_s_{Path(f).stem}_{resolution}bp.tsv" for f in uc_filenames]
 
 # utility function for getting chrom arms 
 def get_hg38_arms(clr=None, excl_ym=True):
@@ -55,7 +55,7 @@ def get_hg38_arms(clr=None, excl_ym=True):
 cvds = [] 
 for expfile, clr in zip(uc_exp_fnames, uc_coolers):
 
-    # skipping the centromeres is a bit cleaner
+    # skipping the centromeres is cleaner as they do not follow typical P(s)
     hg38_arms = get_hg38_arms(clr, excl_ym=True)
 
     if not (os.path.isfile(os.path.join(uc_expected_path, expfile))):
@@ -74,9 +74,7 @@ That was most of the effort. in the line `cooltools.expected_cis`, we computed t
 ```
 # same imports as above, and same variable definitions 
 
-# plot the u-c together on one plot
-#f, axs = plt.subplots(1, 2, figsize=(20, 8))
-
+# plots the p(s) curves together 
 f, axs = plt.subplots(
     2, 1,
     figsize=(6, 9),
@@ -84,9 +82,9 @@ f, axs = plt.subplots(
     sharex=True
 )
 
-cm = ["#33BBEE", "#CC3311", "#009988"] # sacrosanct hansen lab colors (ikykyk)
+cm = ["#33BBEE", "#CC3311", "#009988"] # sacrosanct hansen lab colors (iykyk)
 
-for i in range(len(coolers)):
+for i in range(len(uc_coolers)):
     uc_ps = cvds[i]
 
     uc_ps.loc[uc_ps['dist_bp'] < 2*resolution] = np.nan # first few bins are unreliable
@@ -94,27 +92,41 @@ for i in range(len(coolers)):
     uc_ps = uc_ps['balanced.avg.smoothed.agg']
 
     # plot P(s) in log-log scale
-    axs[0].loglog(uc_s, uc_ps/np.max(uc_ps), label= uc_exp_fnames[i]', color=cm[i], linewidth=2)
-
-    der = np.gradient(np.log(uc_ps),
-                  np.log(uc_s)
+    axs[0].loglog(uc_s, uc_ps/np.max(uc_ps), label= uc_exp_fnames[i], color=cm[i], linewidth=2)
+    axs[0].legend(frameon=False, loc='upper right')
+    
+    der = np.gradient(np.log(uc_ps),np.log(uc_s))
 
     axs[1].semilogx(uc_s, der, label= uc_exp_fnames[i], color=cm[i],linewidth=2)
-
+    
     axs[0].set_ylabel('P(s) (max-normalized)')
     axs[1].set_ylabel('dP(s)/ds')
     axs[1].set_xlabel('s [bp]')
 
-plt.legend(loc='lower right', frameon=False)
 plt.show()
 
 ```
 
 ### Observed-over-expected contact maps 
 
-Many quantitative analyses we want to do on Micro-C maps will require P(s) normalization in some form. This is because if we care about how unusual some sort of genomic interaction is (ex. if an interaction is enriched), we need to be comparing the typical interactions at that genomic distance. Otherwise all your signal will correspond to very close-by genomic elements that come into 3D proximity all the time. Many of the 3D genomics utilities, like those for loop calling and pileups, will do this for you. However, sometimes you may want to see an O/E map for a new analysis of yours, or simply just to visualize the difference.
+Many quantitative analyses we want to do on Micro-C maps will require P(s) normalization in some form. This is because if we care about how unusual some sort of genomic interaction is (ex. if an interaction is enriched), we need to be comparing the typical interactions at that genomic distance. Otherwise all your signal will correspond to very close-by genomic elements that come into 3D proximity all the time. Many of the 3D genomics utilities, like those for loop calling and pileups, will do this for you. However, sometimes you may want to get an O/E map for a new analysis of yours, or simply just to visualize the difference.
 
-Cooltools can divide a contact map matrix by its expected:
+To normalize a region of a contact map by its P(s) curve, you can directly divide the matrix by its P(s) curve. Note that this implementation of O/E logarithmically spaces the expected computation, in order to account for low signal at larger genomic distances. On the other hand, when you compute P(s) using the whole chromososome/genome with `cooltools.expected.expected_cis`, you'll get a contact frequency for each multiple of the binsize at which you computed the expected.
+
+```
+# fetch the dense matrix for your RCMC region 
+clr_mat = clr.matrix(balance=balance).fetch(region)
+
+# if no contacts are in a bin, it's represented as np.nan
+clr_mat[np.isnan(clr_mat)] = 0
+
+# data is the O/E norm matrix, dist_bins are the edges (in genomic sep.) used for getting the expected, sum_pixels and n_pixels refer how much data there was in your matrix
+data, dist_bins, sum_pixels_arr, n_pixels_arr = numutils.observed_over_expected(clr_mat)
+```
+
+Let's compare the visualization of an O/E matrix to an observed matrix:
+
+The black stripe at the diagonal disappeared, and the color scale is different too. The O/E of some interaction between genomic locations A and B in your contact map should be 1 if A and B interact exactly as often as typical elements with similar genomic separation as A and B. It would be greater than 1 if A and B interact more often (i.e. the interaction is enriched). 
 
 However, this requires storing the whole matrix in memory, which can quickly get memory-infeasible for whole chromosomes. If you want to quickly isolate and normalize regions of interest, use   `cooltools ObsExpSnipper()`. Here is a quick example that computes the O/E intensity of a list of loops. This is not the most computationally efficient way to run this code but it's easy-ish to read.
 
