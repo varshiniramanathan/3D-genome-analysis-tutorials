@@ -7,11 +7,11 @@ title: "Calling, quantifying, and classifying loops"
 
 ### Micro-C calling with Mustache
 
-Mustache[https://github.com/ay-lab/mustache] is our loop caller of choice for Micro-C. Mustache uses a stacked difference of Gaussians approach, which is a common way to detect edges in images. It's very flexible and has a lot of parameters, which can take some trial to optimize but will often yield very good results with the right parameter set. Please read the README on their repo to understand how to install and run it. Here, I will briefly discuss the main considerations for using Mustache for loop calling. 
+[Mustache](https://github.com/ay-lab/mustache) is our loop caller of choice for Micro-C. Mustache uses a stacked difference of Gaussians approach, which is a common way to detect edges in images. It's very flexible and has a lot of parameters, which can take some trial to optimize but will often yield very good results with the right parameter set. Please read the README on their repo to understand how to install and run it. Here, I will briefly discuss the main considerations for using Mustache for loop calling. 
 
 1. Binsize (`-res` flag in Mustache)
 
-Recalling some of the information from the first section[stats_n_vis.md], binsize is how many genomic bp we aggregate together per "pixel" in the contact map. Smaller binsizes let us find smaller features, but if the map is too noisy Mustache will struggle to distinguish true loops from noise. The amount of data in a contact map decays with genomic distance. Assuming 2+ billion uniquely mapped reads:
+Recalling some of the information from the [first section](stats_n_vis.md), binsize is how many genomic bp we aggregate together per "pixel" in the contact map. Smaller binsizes let us find smaller features, but if the map is too noisy Mustache will struggle to distinguish true loops from noise. The amount of data in a contact map decays with genomic distance. Assuming 2+ billion uniquely mapped reads:
 
 - For CRE loops that are smaller but often shorter-range, you can use a 2kb or 1kb binsize. \
 - For CTCF loops, you can use 2kb-5kb binsizes up to a few Mb in genomic separation. \
@@ -107,5 +107,5 @@ cat "${odir}/$f1" "${odir}/${bn2}_not_${bn1}.bedpe" "${odir}/${bn3}_only.bedpe" 
 
 ### RCMC loop calling with CHIRON
 
-CHIRON[https://github.com/ahansenlab/chiron] is the loop caller we made for high-resolution RCMC. Mustache can fail to pick up extremely small loops due to the nature of the difference-of-Gaussians method. To detect loops at many size scales, CHIRON uses a CNN that was trained on Micro-C and RCMC. Unlike Mustache, CHIRON only has the binsize parameter to change, but if your RCMC is high-res enough to use CHIRON over Mustache, you should probably stick with the default 1kb anyway. 
+[CHIRON](https://github.com/ahansenlab/chiron) is the loop caller we made for high-resolution RCMC. Mustache can fail to pick up extremely small loops due to the nature of the difference-of-Gaussians method. To detect loops at many size scales, CHIRON uses a CNN that was trained on Micro-C and RCMC. Unlike Mustache, CHIRON only has the binsize parameter to change, but if your RCMC is high-res enough to use CHIRON over Mustache, you should probably stick with the default 1kb anyway. 
 
