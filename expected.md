@@ -212,3 +212,6 @@ if __name__=='__main__':
 
 Again, the comprehensive docs can be found [here for `cooltools.lib.numutils`](https://cooltools.readthedocs.io/en/latest/cooltools.lib.html#module-cooltools.lib.numutils) and [here for `cooltools.api.snipping`](https://cooltools.readthedocs.io/en/latest/cooltools.html#module-cooltools.api.snipping).
 
+**Next:** [Calling, quantifying, and classifying loops](loops.md)
+
+
