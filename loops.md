@@ -13,8 +13,8 @@ Mustache[https://github.com/ay-lab/mustache] is our loop caller of choice for Mi
 
 Recalling some of the information from the first section[stats_n_vis.md], binsize is how many genomic bp we aggregate together per "pixel" in the contact map. Smaller binsizes let us find smaller features, but if the map is too noisy Mustache will struggle to distinguish true loops from noise. The amount of data in a contact map decays with genomic distance. Assuming 2+ billion uniquely mapped reads:
 
-- For CRE loops that are smaller but often shorter-range, you can use a 2kb or 1kb binsize.
-- For CTCF loops, you can use 2kb-5kb binsizes up to a few Mb in genomic separation.
+- For CRE loops that are smaller but often shorter-range, you can use a 2kb or 1kb binsize. \
+- For CTCF loops, you can use 2kb-5kb binsizes up to a few Mb in genomic separation. \
 - For large interactions like Polycomb-mediated interactions, you may have some luck using 10kb binsizes up to many Mb of separation, but these interactions can be difficult to detect by typical loop calling methods.
 
 2. Mustache parameters
@@ -23,8 +23,8 @@ The most useful Mustache parameters to tune (in my opinion) are the sparsity thr
 
 The problem is that CRE-CRE loops are small and faint. So to catch them, you need to be right on the line between noise and signal for your datasets, which takes a lot of trial and error. A good way to test this is to pick a small chromosome and run Mustache many times at a range of parameters, ex:
 
--res: 1kb, 2kb, 5kb
--st: 0.7, 0.88, 0.92
+-res: 1kb, 2kb, 5kb \
+-st: 0.7, 0.88, 0.92 \
 -pt: 0.05, 0.1, 0.2 
 
 A way you could do this in a for loop would be:
@@ -60,7 +60,7 @@ This generates a lot of loop call files (3x3x3=27 per Micro-C dataset, which is 
 
 Notice that I didn't sweep `-pt` in this restricted test. This is because you can achieve roughly equivalent effects by filtering on the FDR later (see below), which saves some testing since you are only FDR-filtering on your favorite parameter set.
 
-2. Filtering loopcalls
+3. Filtering loopcalls
 
 In your loop calling sweep, you want to get to a point where you are detecting most of the loops you want, plus some false positives. Then you can try to scale back the false positives. I tend to filter afterwards on q-value if I notice a lot of false positives. This can be done with the following bash script:
 
@@ -75,7 +75,7 @@ qval="$2" # the threshold you want to use
 tail -n +2 "$name" | awk -v q="$qval" '{OFS="\t"} ($7 < q) {print $1, $2, $3, $4, $5, $6, $7}' > "${name%.*}_q${qval}.bedpe"  
 ```
 
-3. Merging loopcalls. 
+4. Merging loopcalls. 
 
 To detect E-P loops at high confidence from 1kb/2kb and other loops at 5kb+, you want to run Mustache at different binsizes and filters and then merge those. Often, my 1kb/2kb loop calls are where I'm getting high-confidence CRE interactions, and 5kb is "everything else." Then, you want to merge these loopcalls in order of small -> big. 
 
