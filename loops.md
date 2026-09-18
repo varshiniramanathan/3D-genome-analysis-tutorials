@@ -19,7 +19,7 @@ Recalling some of the information from the [first section](stats_n_vis.md), bins
 
 2. Mustache parameters
 
-The most useful Mustache parameters to tune (in my opinion) are the sparsity threshold (`-st`), distance (`-d`), and p-threshold (`-pt`). Increasing sparsity and decreasing the p-threshold will both reduce false positives, with the tradeoff of lowering loop detection. I prefer to increase the sparsity threshold from the default 0.88 to 0.92 or 0.95 for 1kb loop calling at high resolution because I only want to retain confident loops in high-signal areas (note that this is the opposite of Mustache's guidance, but will help avoid over-detecting in high-res datasets). `-d` (distance) is not in the README, perhaps because the code auto-sets distance limits based on the binsize. I would set that to be the maximum E-P loop distance you expect for 1kb/2kb bin size, and 2-5 Mb for larger binsizes depending on how deep your sequencing is and how long the loops you're interested in might be. A good rule of thumb is is to set your distance cutoff at the genomic separation where you cannot see interactions with your eye at your target binsize.
+The most useful Mustache parameters to tune (in my opinion) are the sparsity threshold (`-st`), distance (`-d`), and p-threshold (`-pt`). Increasing sparsity and decreasing the p-threshold will both reduce false positives, with the tradeoff of lowering loop detection. I prefer to increase the sparsity threshold from the default 0.88 to 0.92 or 0.95 for 1kb loop calling at high resolution because I only want to retain confident loops in high-signal areas (note that this is the opposite of Mustache's guidance, but will help avoid over-detecting in high-res datasets). I would set `-d` (distance) to be the maximum E-P loop distance you expect for 1kb/2kb bin size, and 2-5 Mb for larger binsizes depending on how deep your sequencing is and how long the loops you're interested in might be. A good rule of thumb is is to set your distance cutoff at the genomic separation where you cannot see interactions with your eye at your target binsize.
 
 The problem is that CRE-CRE loops are small and faint. So to catch them, you need to be right on the line between noise and signal for your datasets, which takes a lot of trial and error. A good way to test this is to pick a small chromosome and run Mustache many times at a range of parameters, ex:
 
@@ -27,7 +27,7 @@ The problem is that CRE-CRE loops are small and faint. So to catch them, you nee
 -st: 0.7, 0.88, 0.92 \
 -pt: 0.05, 0.1, 0.2 
 
-A way you could do this in a for loop would be:
+A way you could do this in a for loop, while using different distances for different binsizes, would be:
 
 ```
 #!/bin/bash
@@ -37,6 +37,13 @@ st_vals=(0.7 0.88 0.92)
 pt_vals=(0.1 0.2 0.4)
 
 for res in "${res_vals[@]}"; do
+
+     case "$res" in
+        1kb) dist=200000 ;;
+        2kb) dist=500000 ;;
+        5kb) dist=2000000 ;;
+    esac
+
     for st in ${st_vals[@]}"; do
         for pt in ${pt_vals[@]}"; do
 
@@ -45,6 +52,7 @@ for res in "${res_vals[@]}"; do
                 -r "$res" \
                 --st "$st" \
                 --pt "$pt" \
+                -d "$dist" \
                 -o "mustache_${res}_${st}_${pt}"
         done
     done
